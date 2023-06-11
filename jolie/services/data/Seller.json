@@ -1,0 +1,140 @@
+{
+    "choreography": {
+        "events": [
+            {
+                "id": "Request",
+                "label": "Request",
+                "sender": "Buyer",
+                "receivers": [
+                    "Seller",
+                    "Buyer"
+                ]
+            },
+            {
+                "id": "Order",
+                "label": "Order",
+                "sender": "Buyer",
+                "receivers": [
+                    "Seller",
+                    "Buyer"
+                ]
+            },
+            {
+                "id": "Quote",
+                "label": "Quote",
+                "sender": "Seller",
+                "receivers": [
+                    "Buyer",
+                    "Seller"
+                ]
+            },
+            {
+                "id": "Ship",
+                "label": "Ship",
+                "sender": "Seller",
+                "receivers": [
+                    "Buyer",
+                    "Seller"
+                ]
+            }
+        ],
+        "marking": {
+            "executed": [],
+            "pending": [
+                "Request"
+            ],
+            "included": [
+                "Request",
+                "Order"
+            ],
+            "values": {}
+        },
+        "relations": {
+            "conditions": [],
+            "responses": [
+                {
+                    "source": "Order",
+                    "target": "Ship",
+                    "guard": {
+                        "lhs": {
+                            "id": "Order"
+                        },
+                        "op": ">",
+                        "rhs": 0
+                    }
+                },
+                {
+                    "source": "Request",
+                    "target": "Quote",
+                    "guard": true
+                }
+            ],
+            "milestones": [],
+            "inclusions": [
+                {
+                    "source": "Order",
+                    "target": "Ship",
+                    "guard": {
+                        "lhs": {
+                            "id": "Order"
+                        },
+                        "op": ">",
+                        "rhs": 0
+                    }
+                },
+                {
+                    "source": "Request",
+                    "target": "Quote",
+                    "guard": true
+                }
+            ],
+            "exclusions": [
+                {
+                    "source": "Ship",
+                    "target": "Ship",
+                    "guard": true
+                },
+                {
+                    "source": "Quote",
+                    "target": "Quote",
+                    "guard": true
+                }
+            ],
+            "cancellations": []
+        }
+    },
+    "dependencies": {
+        "Quote": [
+            {
+                "sender": "Buyer",
+                "id": "Request"
+            },
+            {
+                "sender": "Seller",
+                "id": "Quote"
+            },
+            {
+                "sender": "Buyer",
+                "id": "Order"
+            }
+        ],
+        "Ship": [
+            {
+                "sender": "Buyer",
+                "id": "Request"
+            },
+            {
+                "sender": "Buyer",
+                "id": "Order"
+            },
+            {
+                "sender": "Seller",
+                "id": "Ship"
+            }
+        ]
+    },
+    "locations": {
+        "Seller": "socket://localhost:8001",
+        "Buyer": "socket://localhost:8000"
+    }
+}
